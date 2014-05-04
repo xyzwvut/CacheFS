@@ -3,6 +3,7 @@ import random
 import string
 import os
 import stat
+import shutil
 
 #
 # Module constructed in a way it can be used in pytest
@@ -36,6 +37,9 @@ class Directory:
 
         self.names.append(pathname)
         return pathname
+
+    def remove_file(self, pathname):
+        self.name.remove(pathname)
 
     def get_subdir(self):
         """Get a sub-directory"""
@@ -121,6 +125,11 @@ class TestFile():
         os.chmod(pathname, mode)
         assert(os.stat(pathname).st_mode == mode)
 
+    def test_remove_files(self):
+        for pathname in self.directory.names:
+            os.remove(pathname)
+            assert(not os.exists(pathname))
+
     #
     # Check permissions
     #
@@ -157,6 +166,30 @@ class TestFile():
 
         assert(os.stat(pathname).st_size == len(s))
         assert(s == r)
+
+
+    def copy_file(self, size):
+        src = self.directory.get_file()
+        dst = self.directory.get_file()
+        s = os.urandom(size * 8)
+        r = None
+        with open(src, 'wb') as f:
+            f.write(s)
+        shutil.copy2(src, dst)
+        with open(dst, 'rb') as f:
+            r = f.read()
+
+        assert(s == r)
+
+    def test_copy_file_100bytes(self):
+        self.copy_file(100)
+
+    def test_copy_file_1kb(self):
+        self.copy_file(1024)
+
+    def test_copy_file_1mb(self):
+        self.copy_file(1024 * 1024)
+
 
 
 class TestMultipleFiles():
