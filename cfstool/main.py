@@ -19,6 +19,11 @@ def command_status(args):
     pass
 
 
+def command_fetch(args):
+    """Fetch file/directory into the cache"""
+    pass
+
+
 def command_flush(args):
     """Flush cache back onto the server"""
     print args
@@ -59,6 +64,15 @@ def parse_cmdline(argv):
     parser_pin.add_argument('-r', '--recursive', dest='recursive',
                             action='store_true',
                             help='include subdirectories')
+
+    parser_fetch = subparsers.add_parser('fetch')
+    parser_fetch.set_defaults(func=command_fetch, all=False, recusrive=False)
+    parser_fetch.add_argument('path', help='path to file/directory')
+    parser_fetch.add_argument('-a', '--all', dest='all', action='store_true',
+                              help='include everything')
+    parser_fetch.add_argument('-r', '--recursive', dest='recursive',
+                              action='store_true',
+                              help='include subdirectories')
 
     args = parser.parse_args(argv)
     return args
