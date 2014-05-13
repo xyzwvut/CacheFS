@@ -9,15 +9,20 @@ TODOs:
 - [OK] Read file
 - [OK] Copy file
 - Cleanup leftover files
-- Local to local backend
 3. Design
 - How does the FUSE interface look?
 - What is the smallest tool that works?
 - synch to push changes to server
 - How to handle file cration?
-- How to run it as a server?
-- How to hook in a cmdline tool?
+- [ok] How to run it as a server?
+- [ok] How to hook in a cmdline tool?
 4. Prototype
+- Where to put the humanfriendly module?
+- Keep track of current size of the cache
+- Print size of the cache
+- [ok] How to pass cache, backend around?
+- Local to local backend
+- CTRL+c should gracefully shut down cmd and then the server
 - Open file
 - Fetch file into cache
 - Read/write into the cache

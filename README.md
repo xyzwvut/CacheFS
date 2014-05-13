@@ -8,7 +8,6 @@ Open -> lookup file -> fetch into cache -> local operations
 
 Run
 ===
-
 python direct.py /Users/sb/cachefs/back/ /Users/sb/cachefs/front/
 
 
@@ -18,13 +17,11 @@ CacheFS.git/tests$ py.test --front-dir=/Users/sb/cachefs/front/ -vv -x
 
 Add -s to disable capturing (print() will be shown)
 
-
 Design
 ======
 /front    Contains the virtual view using cache and backend
 /cache    Contains the medata
 /back     Way to access the data on the server
-
 
 Server
 ======
@@ -51,17 +48,15 @@ Called from within the FUSE driver.
 
 Cache is organized in pools (LRU, pinned)?
 
-
-Syncher
+Syncer
 =======
 Keep log of modified files.
 Push them via the backend to the server if avialable.
 
-
 Backend
 =======
 Abstract away different forms to access the files on the server
-e.g. SSHFS, SMB, AFP, ssh, ftp
+e.g. cp, rsync, SSHFS, SMB, AFP, ssh, ftp
 - Interface
   - list files (pathname)
   - get  (pathname, offset, size)
