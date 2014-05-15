@@ -19,12 +19,12 @@ class CacheFSConsole(cmd.Cmd):
             return True
 
     def do_exit(self, arg):
-        """Quit the server"""
+        """ Quit the server """
         print('Ending server')
         return True
 
     def do_status(self, arg):
-        """Print status information"""
+        """ Print status information """
         print('Status')
         pass
 
@@ -48,7 +48,7 @@ class CacheFSConsole(cmd.Cmd):
         except SystemExit:
             return False
 
-        # self.cache.fetch(args.path, args.all, args.recursive)
+        self.cache.fetch(args.path, args.all, args.recursive)
         pass
 
     def do_flush(self, arg):
