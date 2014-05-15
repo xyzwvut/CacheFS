@@ -3,7 +3,7 @@ import cmd
 
 class CacheFSConsole(cmd.Cmd):
     intro = 'CacheFS console. Type help or ? to list commands\n'
-    prompt = 'cachefs: $'
+    prompt = 'cachefs: $ '
 
     def __init__(self, cache):
         cmd.Cmd.__init__(self)
@@ -26,6 +26,9 @@ class CacheFSConsole(cmd.Cmd):
     def do_status(self, arg):
         """ Print status information """
         print('Status')
+        s = self.cache.status()
+        print('files: {files}'.format(**s))
+        print('size : {size}/{allowed_size}'.format(**s))
         pass
 
     def do_fetch(self, arg):

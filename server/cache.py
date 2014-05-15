@@ -30,16 +30,32 @@ class Cache:
         # Sanitize
         directory = os.path.expanduser(config['dir'])
         #size = humanfriendly.parse_size(config['size'])
-        size = config['size']
+        self.size_allowed = config['size']
 
         if not os.access(directory, os.R_OK | os.W_OK):
             raise Exception('Can not access Cache directory {}'.format(directory))
 
-        self.size = size
         self.backend = backend
         self.directory = directory
-        self.pathnames = {}
+        self.initialize_stats()
         pass
+
+    def initialize_stats(self):
+        total_size = 0
+        total_files = 0
+        for dirpath, dirnames, filenames in os.walk(self.directory):
+            for f in filenames:
+                fp = os.path.join(dirpath, f)
+                total_size += os.path.getsize(fp)
+            total_files += len(filenames)
+        self.size = total_size
+        self.files = total_files
+
+    def status(self):
+        s = { 'size': self.size,
+              'allowed_size': self.size_allowed,
+              'files': self.files, }
+        return s
 
     def fetch(self, pathname, all, recursive):
         print('Cache: lookup {}'.format(pathname))
