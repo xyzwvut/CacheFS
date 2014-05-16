@@ -52,6 +52,16 @@ class RsyncBackend:
 
         print("push: '{}'".format(self.cmdline(parameters)))
 
+    def list(self, pathname, recursive):
+        """ List directory contents """
+        assert recursive == False, 'Recurive listing not implemented'
+
+        parameters = { 'args':  '',
+                       'src' :  '',
+                       'dst' :  self.server_path(pathname) }
+
+        print("list: '{}'".format(self.cmdline(paramters)))
+
 
 def create(config, local_dir):
     """ Create backend by config description """
