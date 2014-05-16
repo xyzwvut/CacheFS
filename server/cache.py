@@ -1,4 +1,5 @@
 import os
+
 import humanfriendly
 
 class File:
@@ -56,6 +57,16 @@ class Cache:
               'allowed_size': self.size_allowed,
               'files': self.files, }
         return s
+
+    def lls(self, pathname, recursive):
+        assert recursive == False, 'Recursive listing not supported'
+        print('Cache: lls {}'.format(pathname))
+        pass
+
+    def rls(self, pathname, recursive):
+        assert recursive == False, 'Recursive listing not supported'
+        print('Cache: rls {}'.format(pathname))
+        pass
 
     def fetch(self, pathname, all, recursive):
         print('Cache: lookup {}'.format(pathname))
