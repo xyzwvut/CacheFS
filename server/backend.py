@@ -40,19 +40,19 @@ class RsyncBackend:
     def get(self, pathname):
         cmd = [ self.rsync, self.args, self.server_path(pathname),
                 self.local_path(pathname) ]
-        print("get: '{}'".format(" ".join(cmd)))
+        print("get: '{}'".format(' '.join(cmd)))
 
     def push(self, pathname):
         cmd = [ self.rsync, self.args, self.local_path(pathname),
                 self.server_path(pathname) ]
-        print("push: '{}'".format(" ".join(cmd)))
+        print("push: '{}'".format(' '.join(cmd)))
 
     def ls(self, pathname, recursive):
         """ List directory contents """
         assert recursive == False, 'Recurive listing not implemented'
 
         cmd = [self.rsync, self.server_path(pathname)]
-        print("ls: '{}'".format(" ".join(cmd)))
+        print("ls: '{}'".format(' '.join(cmd)))
 
         out = subprocess.check_output(cmd)
         print(out)
