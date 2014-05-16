@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 class ScpBackend:
     def __init__(self, local, remote):
@@ -26,6 +27,7 @@ class RsyncBackend:
         self.local = local
         self.remote = remote
         self.args = 'av'
+        self.rsync = '/usr/bin/rsync'
     pass
 
     def local_path(self, pathname):
@@ -33,34 +35,27 @@ class RsyncBackend:
 
     def server_path(self, pathname):
         login = '{user}@{host}:'.format(user=self.user, host=self.host)
-        return os.path.join(login, self.remote, pathname)
-
-    def cmdline(self, parameters):
-        return 'rsync {args} {src} {dst}'.format(**parameters)
+        return login + os.path.join(os.path.sep, login, self.remote, pathname)
 
     def get(self, pathname):
-        parameters = { 'args': self.args,
-                       'src': self.server_path(pathname),
-                       'dst': self.local_path(pathname) }
-
-        print("get: '{}'".format(self.cmdline(parameters)))
+        cmd = [ self.rsync, self.args, self.server_path(pathname),
+                self.local_path(pathname) ]
+        print("get: '{}'".format(" ".join(cmd)))
 
     def push(self, pathname):
-        parameters = { 'args': self.args,
-                       'src': self.local_path(pathname),
-                       'dst': self.server_path(pathname) }
+        cmd = [ self.rsync, self.args, self.local_path(pathname),
+                self.server_path(pathname) ]
+        print("push: '{}'".format(" ".join(cmd)))
 
-        print("push: '{}'".format(self.cmdline(parameters)))
-
-    def list(self, pathname, recursive):
+    def ls(self, pathname, recursive):
         """ List directory contents """
         assert recursive == False, 'Recurive listing not implemented'
 
-        parameters = { 'args':  '',
-                       'src' :  '',
-                       'dst' :  self.server_path(pathname) }
+        cmd = [self.rsync, self.server_path(pathname)]
+        print("ls: '{}'".format(" ".join(cmd)))
 
-        print("list: '{}'".format(self.cmdline(paramters)))
+        out = subprocess.check_output(cmd)
+        print(out)
 
 
 def create(config, local_dir):

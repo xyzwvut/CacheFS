@@ -66,6 +66,7 @@ class Cache:
     def rls(self, pathname, recursive):
         assert recursive == False, 'Recursive listing not supported'
         print('Cache: rls {}'.format(pathname))
+        self.backend.ls(pathname, recursive)
         pass
 
     def fetch(self, pathname, all, recursive):
