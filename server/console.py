@@ -76,7 +76,7 @@ class CacheFSConsole(cmd.Cmd):
     def do_fetch(self, arg):
         """ -a --all
             -r --recursive
-            [path] [directory]
+            [path]
         """
         print('Fetch: arg {}'.format(arg))
         parser = argparse.ArgumentParser(prog='fetch')
@@ -87,7 +87,6 @@ class CacheFSConsole(cmd.Cmd):
         parser.add_argument('-r', '--recursive', dest='recursive',
                             action='store_true',
                             help='include subdirectories')
-
         try:
             args = parser.parse_args(arg.split())
         except SystemExit:
@@ -99,7 +98,7 @@ class CacheFSConsole(cmd.Cmd):
     def do_flush(self, arg):
         """ -a --all
             -r --recursive
-            [path] [directory]
+            [path]
         """
         print('Flush: arg {}'.format(arg))
         parser = argparse.ArgumentParser(prog='flush')
@@ -110,9 +109,8 @@ class CacheFSConsole(cmd.Cmd):
         parser.add_argument('-r', '--recursive', dest='recursive',
                             action='store_true',
                             help='include subdirectories')
-
         try:
-            args = parser.parse_args(arg)
+            args = parser.parse_args(arg.split())
         except SystemExit:
             return False
 
@@ -122,7 +120,7 @@ class CacheFSConsole(cmd.Cmd):
     def do_pin(self, arg):
         """ -a --all
             -r --recursive
-            [path] [directory]
+            [path]
         """
         print('Pin: arg {}'.format(arg))
         parser = argparse.ArgumentParser()
@@ -133,13 +131,11 @@ class CacheFSConsole(cmd.Cmd):
         parser.add_argument('-r', '--recursive', dest='recursive',
                             action='store_true',
                             help='include subdirectories')
-
         try:
-            args = parser.parse_args(arg)
+            args = parser.parse_args(arg.split())
         except SystemExit:
             return False
 
-        # Fetch
         # self.cache.pin(args.path, args.all, args.recursive)
         pass
 
