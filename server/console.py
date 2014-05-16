@@ -31,6 +31,48 @@ class CacheFSConsole(cmd.Cmd):
         print('size : {size}/{allowed_size}'.format(**s))
         pass
 
+    def do_lls(self, arg):
+        """
+            Local list directroy contents
+            -r --recursive
+            [path]
+        """
+        print('lls: arg {}'.format(arg))
+        parser = argparse.ArgumentParser(prog='lls')
+        parser.set_defaults(recursive=False)
+        parser.add_argument('path', help='path to local file/directory to show')
+        parser.add_argument('-r', '--recursive', dest='recursive',
+                            action='store_true',
+                            help='include subdirectories')
+        try:
+            args = parser.parse_args(arg.split())
+        except SystemExit:
+            return False
+
+        self.cache.lls(args.path, args.recursive)
+        pass
+
+    def do_rls(self, arg):
+        """
+            Remote list directroy contents
+            -r --recursive
+            [path]
+        """
+        print('rls: arg {}'.format(arg))
+        parser = argparse.ArgumentParser(prog='rls')
+        parser.set_defaults(recursive=False)
+        parser.add_argument('path', help='path to remote file/directory to show')
+        parser.add_argument('-r', '--recursive', dest='recursive',
+                            action='store_true',
+                            help='include subdirectories')
+        try:
+            args = parser.parse_args(arg.split())
+        except SystemExit:
+            return False
+
+        self.cache.rls(args.path, args.recursive)
+        pass
+
     def do_fetch(self, arg):
         """ -a --all
             -r --recursive
