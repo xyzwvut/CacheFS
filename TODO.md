@@ -9,6 +9,14 @@ TODOs:
 - [OK] Read file
 - [OK] Copy file
 - Cleanup leftover files
+- Integrate server tests
+- Rsync list file
+- Rsync list directory
+- Rsync file size
+- Rsync files list
+- Rsync files permissions
+- Understand overall hierarchy
+- Go my iTunes files and inspect their atributes
 3. Design
 - How does the FUSE interface look?
 - What is the smallest tool that works?
