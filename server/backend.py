@@ -80,7 +80,7 @@ class RsyncBackend:
 
     def process_ls_output(self, out):
         """ Process output processed by ls """
-        for line in out.splitlines():
+        for line in out.decode('utf-8').splitlines():
             desc = parse_ls_line(line)
 
     def ls(self, pathname, recursive):
