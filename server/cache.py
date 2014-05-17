@@ -32,8 +32,7 @@ class Cache:
     def __init__(self, config, backend):
         # Sanitize
         directory = os.path.expanduser(config['dir'])
-        size = parse_size(config['size'])
-        self.size_allowed = config['size']
+        self.size_allowed = parse_size(config['size'])
 
         if not os.access(directory, os.R_OK | os.W_OK):
             raise Exception('Can not access Cache directory {}'.format(directory))
