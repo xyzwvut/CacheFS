@@ -1,11 +1,13 @@
 import os
 
-import humanfriendly
+from contrib.humanfriendly import parse_size
+
 
 class File:
     def __init__(self, directory, name):
         self.directory = directory
         self.name = name
+        self.size = None
 
     def pathname():
         return os.sep.join(self.directory.pathname(), self.name)
@@ -30,7 +32,7 @@ class Cache:
     def __init__(self, config, backend):
         # Sanitize
         directory = os.path.expanduser(config['dir'])
-        #size = humanfriendly.parse_size(config['size'])
+        size = parse_size(config['size'])
         self.size_allowed = config['size']
 
         if not os.access(directory, os.R_OK | os.W_OK):
