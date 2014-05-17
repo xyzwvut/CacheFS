@@ -24,9 +24,9 @@ class RsyncBackend:
     def __init__(self, local, user, host, remote):
         self.user = user
         self.host = host
-        self.local = local
+        self.local = os.path.expanduser(local)
         self.remote = remote
-        self.args = 'av'
+        self.args = '-av'
         self.rsync = '/usr/bin/rsync'
     pass
 
