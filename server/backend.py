@@ -1,4 +1,5 @@
 import os
+import re
 import subprocess
 
 class ScpBackend:
@@ -13,6 +14,34 @@ class ScpBackend:
 
     def push(self, pathname):
         pass
+
+
+def parse_ls_line(line):
+    result = re.match(r'(.)(.{3})(.{3})(.{3})\s(.*) (.+)/(.+)/(.+) (.+):(.+):(.+) (.*)$', line)
+    if result:
+        desc = {}
+        if result.group(1) == '-':
+            desc['type'] = 'file'
+        elif result.group(1) == 'd':
+            desc['type'] = 'dir'
+        else:
+            raise Exception('Unkown line in ls rsync output')
+
+        desc['perm_u'] = result.group(2)
+        desc['perm_g'] = result.group(3)
+        desc['perm_o'] = result.group(4)
+        desc['size']   = int(result.group(5))
+        desc['year']   = int(result.group(6))
+        desc['month']  = int(result.group(7))
+        desc['day']    = int(result.group(8))
+        desc['hour']   = int(result.group(9))
+        desc['min']    = int(result.group(10))
+        desc['sec']    = int(result.group(11))
+        desc['name']   = result.group(12)
+        return desc
+    else:
+        return None
+
 
 
 class RsyncBackend:
@@ -41,21 +70,28 @@ class RsyncBackend:
         cmd = [ self.rsync, self.args, self.server_path(pathname),
                 self.local_path(pathname) ]
         print("get: '{}'".format(' '.join(cmd)))
+        out = subprocess.check_output(cmd)
+        print(out)
 
     def push(self, pathname):
         cmd = [ self.rsync, self.args, self.local_path(pathname),
                 self.server_path(pathname) ]
         print("push: '{}'".format(' '.join(cmd)))
 
+    def process_ls_output(self, out):
+        """ Process output processed by ls """
+        for line in out.splitlines():
+            desc = parse_ls_line(line)
+
     def ls(self, pathname, recursive):
         """ List directory contents """
         assert recursive == False, 'Recurive listing not implemented'
-
-        cmd = [self.rsync, self.server_path(pathname)]
-        print("ls: '{}'".format(' '.join(cmd)))
+        cmd = [self.rsync, '--list-only', self.server_path(pathname)]
 
         out = subprocess.check_output(cmd)
-        print(out)
+
+        self.process_ls_output(out)
+
 
 
 def create(config, local_dir):
