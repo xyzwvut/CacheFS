@@ -45,6 +45,15 @@ def parse_ls_line(line):
     else:
         return None
 
+def parse_ls_output(out):
+    """ Parse output producesd by rysnc list-only """
+    result = []
+    for line in out.decode('utf-8').splitlines():
+        # print(line)
+        desc = parse_ls_line(line)
+        if desc:
+            result.append(desc)
+    return result
 
 
 class RsyncBackend:
@@ -81,15 +90,6 @@ class RsyncBackend:
                 self.server_path(pathname) ]
         print("push: '{}'".format(' '.join(cmd)))
 
-    def parse_ls_output(self, out):
-        """ Parse output producesd by rysnc list-only """
-        result = []
-        for line in out.decode('utf-8').splitlines():
-            # print(line)
-            desc = parse_ls_line(line)
-            if desc:
-                result.append(desc)
-        return result
 
     def ls(self, pathname, recursive):
         """ List directory contents """
@@ -100,7 +100,7 @@ class RsyncBackend:
 
         out = subprocess.check_output(cmd)
 
-        return self.parse_ls_output(out)
+        return parse_ls_output(out)
 
 
 def create(config, local_dir):
