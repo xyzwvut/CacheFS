@@ -81,20 +81,26 @@ class RsyncBackend:
                 self.server_path(pathname) ]
         print("push: '{}'".format(' '.join(cmd)))
 
-    def process_ls_output(self, out):
-        """ Process output processed by ls """
+    def parse_ls_output(self, out):
+        """ Parse output producesd by rysnc list-only """
+        result = []
         for line in out.decode('utf-8').splitlines():
+            # print(line)
             desc = parse_ls_line(line)
+            if desc:
+                result.append(desc)
+        return result
 
     def ls(self, pathname, recursive):
         """ List directory contents """
-        assert recursive == False, 'Recurive listing not implemented'
-        cmd = [self.rsync, '--list-only', self.server_path(pathname)]
+        cmd = [self.rsync, '--list-only']
+        if recursive:
+            cmd.append('-r')
+        cmd.append(self.server_path(pathname))
 
         out = subprocess.check_output(cmd)
 
-        self.process_ls_output(out)
-
+        return self.parse_ls_output(out)
 
 
 def create(config, local_dir):
