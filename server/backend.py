@@ -2,9 +2,10 @@ import os
 import re
 import subprocess
 
+
 class ScpBackend:
     def __init__(self, local, remote):
-        self.local  = local
+        self.local = local
         self.remote = remote
 
     def get(self, pathname):
@@ -13,6 +14,7 @@ class ScpBackend:
         os.system(cmdline)
 
     def push(self, pathname):
+        """ Push file to server """
         pass
 
 
@@ -33,17 +35,18 @@ def parse_ls_line(line):
         desc['perm_u'] = result.group(2)
         desc['perm_g'] = result.group(3)
         desc['perm_o'] = result.group(4)
-        desc['size']   = int(result.group(5))
-        desc['year']   = int(result.group(6))
-        desc['month']  = int(result.group(7))
-        desc['day']    = int(result.group(8))
-        desc['hour']   = int(result.group(9))
-        desc['min']    = int(result.group(10))
-        desc['sec']    = int(result.group(11))
-        desc['name']   = result.group(12)
+        desc['size'] = int(result.group(5))
+        desc['year'] = int(result.group(6))
+        desc['month'] = int(result.group(7))
+        desc['day'] = int(result.group(8))
+        desc['hour'] = int(result.group(9))
+        desc['min'] = int(result.group(10))
+        desc['sec'] = int(result.group(11))
+        desc['name'] = result.group(12)
         return desc
     else:
         return None
+
 
 def parse_ls_output(out):
     """ Parse output producesd by rysnc list-only """
@@ -79,17 +82,16 @@ class RsyncBackend:
         return login + os.path.join(os.path.sep, login, self.remote, pathname)
 
     def get(self, pathname):
-        cmd = [ self.rsync, self.args, self.server_path(pathname),
-                self.local_path(pathname) ]
+        cmd = [self.rsync, self.args, self.server_path(pathname),
+               self.local_path(pathname)]
         print("get: '{}'".format(' '.join(cmd)))
         out = subprocess.check_output(cmd)
         print(out)
 
     def push(self, pathname):
-        cmd = [ self.rsync, self.args, self.local_path(pathname),
-                self.server_path(pathname) ]
+        cmd = [self.rsync, self.args, self.local_path(pathname),
+               self.server_path(pathname)]
         print("push: '{}'".format(' '.join(cmd)))
-
 
     def ls(self, pathname, recursive):
         """ List directory contents """

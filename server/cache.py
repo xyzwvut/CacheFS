@@ -13,7 +13,6 @@ class File:
         return os.sep.join(self.directory.pathname(), self.name)
 
 
-
 class Directory:
     def __init__(self, parent, name):
         self.name = name
@@ -51,7 +50,7 @@ def split_path(self, pathname):
 
     while True:
         (path, last) = os.path.split(path)
-        if path == None:
+        if path is None:
             break
         directories.insert(0, last)
     return directories
@@ -80,13 +79,13 @@ class Cache:
 
     def status(self):
         self.update_stats()
-        s = { 'size': self.size,
-              'allowed_size': format_size(self.size_allowed),
-              'files': self.files, }
+        s = {'size': self.size,
+             'allowed_size': format_size(self.size_allowed),
+             'files': self.files}
         return s
 
     def lls(self, pathname, recursive):
-        assert recursive == False, 'Recursive listing not supported'
+        assert not recursive, 'Recursive listing not supported'
         print('Cache: lls {}'.format(pathname))
         pass
 
@@ -120,4 +119,3 @@ class Cache:
     def shutdown(self):
         print('Cache: shutdown')
         pass
-

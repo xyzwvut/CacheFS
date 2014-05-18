@@ -1,6 +1,7 @@
 import argparse
 import cmd
 
+
 class CacheFSConsole(cmd.Cmd):
     intro = 'CacheFS console. Type help or ? to list commands\n'
     prompt = 'cachefs: $ '
@@ -138,4 +139,3 @@ class CacheFSConsole(cmd.Cmd):
 
         # self.cache.pin(args.path, args.all, args.recursive)
         pass
-
