@@ -17,6 +17,9 @@ class ScpBackend:
 
 
 def parse_ls_line(line):
+    """ Parse output printet by rsync list directory
+        '-rw-r--r--           0 2014/05/10 19:38:43 a'
+    """
     result = re.match(r'(.)(.{3})(.{3})(.{3})\s(.*) (.+)/(.+)/(.+) (.+):(.+):(.+) (.*)$', line)
     if result:
         desc = {}
