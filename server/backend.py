@@ -43,6 +43,7 @@ def parse_ls_line(line):
         desc['min'] = int(result.group(10))
         desc['sec'] = int(result.group(11))
         desc['name'] = result.group(12)
+        desc['raw'] = line   # Debug
         return desc
     else:
         return None

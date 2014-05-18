@@ -8,6 +8,7 @@ class File:
         self.directory = directory
         self.name = name
         self.size = None
+        print('File({}, {})'.format(directory.pathname(), name))
 
     def pathname(self):
         return os.sep.join(self.directory.pathname(), self.name)
@@ -18,17 +19,28 @@ class Directory:
         self.name = name
         self.parent = parent
         self.entries = {}
+        self.log()
         pass
+
+    def log(self):
+        if self.parent is None:
+            path = '-'
+        else:
+            path = self.parent.pathname()
+        print('Dir({}, {})'.format(path, self.name))
 
     def pathname(self):
         """ Walk all directoris up """
-        return os.path.join(self.parent.rel_pathname, name)
+        if self.parent is None:
+            return self.name
+        else:
+            return os.path.join(self.parent.pathname(), self.name)
 
     def add_entry(self, new_entry):
         self.entries[new_entry.name] = new_entry
 
     def find(self, name):
-        self.entries.get(name, None)
+        return self.entries.get(name, None)
 
 
 def get_tree_stats(directory):
@@ -43,16 +55,23 @@ def get_tree_stats(directory):
     return total_files, total_size
 
 
-def split_path(self, pathname):
+def split_path(pathname):
     """ Split pathname into directories and filename """
     directories = []
     path = pathname
+    print("path {}".format(path))
 
     while True:
-        (path, last) = os.path.split(path)
-        if path is None:
+        path, folder = os.path.split(path)
+
+        if folder != "":
+            directories.append(folder)
+        else:
+            if path != "":
+                directories.append(path)
             break
-        directories.insert(0, last)
+
+    directories.reverse()
     return directories
 
 
@@ -71,6 +90,9 @@ class Cache:
         self.backend = backend
         self.directory = directory
         self.files, self.size = get_tree_stats(self.directory)
+        self.root = Directory(None, 'root')
+
+        self.load_tree()
         pass
 
     def update_stats(self):
@@ -83,6 +105,55 @@ class Cache:
              'allowed_size': format_size(self.size_allowed),
              'files': self.files}
         return s
+
+    def load_tree(self):
+        """ Load the tree of available files """
+
+        # We have the full pathname in the listing
+        results = self.backend.ls('.', recursive=True)
+
+        for result in results:
+            print("--------------------------------")
+            print(result['raw'])
+            path = split_path(result['name'])
+            print(path)
+
+            if path[-1] == '.':
+                print('Skipping {}'.format(path[-1]))
+                continue
+
+            if result['type'] == 'file':
+                e = self.root
+                parent = self.root
+                # Last element is the file
+                print('is this the file {}?'.format(path[-1]))
+                for dirname in path[:-1]:
+                    e = parent.find(dirname)
+                    if e is None:
+                        e = Directory(parent, dirname)
+                        parent.add_entry(e)
+                        parent = e
+                # TODO: Assert walk sucessfull
+                print("Add file to dir '{}'".format(e.pathname()))
+                f = e.find(path[-1])
+                if f is None:
+                    # File not known, create
+                    f = File(e, path[-1])
+                    e.add_entry(f)
+        
+            elif result['type'] == 'dir':
+                e = self.directory
+                parent = self.directory
+                for dirname in path:
+                    e = parent.find(dirname)
+                    if e is None:
+                        e = Directory(parent, dirname)
+                        parent.add_entry(d)
+                        parent = d
+                # TODO: Assert walk sucessfull
+            else:
+                assert False, 'Unknown type'
+        pass
 
     def lls(self, pathname, recursive):
         assert not recursive, 'Recursive listing not supported'
