@@ -60,6 +60,7 @@ e.g. cp, rsync, SSHFS, SMB, AFP, ssh, ftp
   - list files (pathname)
   - get  (pathname, offset, size)
   - push (pathname, offset, size)
+  - disconnect (flush all changes out)
 
 Cmdline Tools
 =============

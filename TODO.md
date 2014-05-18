@@ -10,14 +10,14 @@ TODOs:
 - [OK] Copy file
 - Cleanup leftover files
 - Integrate server tests
-- Rsync list file
-- Rsync list directory
-- Rsync file size
-- Rsync files list
+- [ok] Rsync list file
+- [ok] Rsync list directory
+- [ok] Rsync file size
 - Rsync files permissions
 - Understand overall hierarchy
 - Go my iTunes files and inspect their atributes
 3. Design
+- What happens if backend is disconnected and IO comes in?
 - How does the FUSE interface look?
 - What is the smallest tool that works?
 - synch to push changes to server
