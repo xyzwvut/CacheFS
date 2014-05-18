@@ -1,6 +1,6 @@
 import os
 
-from contrib.humanfriendly import parse_size
+from contrib.humanfriendly import parse_size, format_size
 
 
 class File:
@@ -9,7 +9,7 @@ class File:
         self.name = name
         self.size = None
 
-    def pathname():
+    def pathname(self):
         return os.sep.join(self.directory.pathname(), self.name)
 
 
@@ -17,12 +17,44 @@ class File:
 class Directory:
     def __init__(self, parent, name):
         self.name = name
+        self.parent = parent
+        self.entries = {}
         pass
 
-    def full_pathname():
-        """ Walk all directories up and concatenate them """
-        pass
+    def pathname(self):
+        """ Walk all directoris up """
+        return os.path.join(self.parent.rel_pathname, name)
 
+    def add_entry(self, new_entry):
+        self.entries[new_entry.name] = new_entry
+
+    def find(self, name):
+        self.entries.get(name, None)
+
+
+def get_tree_stats(directory):
+    """ Walk a directory tree and collect stats """
+    total_size = 0
+    total_files = 0
+    for dirpath, dirnames, filenames in os.walk(directory):
+        for f in filenames:
+            fp = os.path.join(dirpath, f)
+            total_size += os.path.getsize(fp)
+        total_files += len(filenames)
+    return total_files, total_size
+
+
+def split_path(self, pathname):
+    """ Split pathname into directories and filename """
+    directories = []
+    path = pathname
+
+    while True:
+        (path, last) = os.path.split(path)
+        if path == None:
+            break
+        directories.insert(0, last)
+    return directories
 
 
 class Cache:
@@ -39,23 +71,17 @@ class Cache:
 
         self.backend = backend
         self.directory = directory
-        self.initialize_stats()
+        self.files, self.size = get_tree_stats(self.directory)
         pass
 
-    def initialize_stats(self):
-        total_size = 0
-        total_files = 0
-        for dirpath, dirnames, filenames in os.walk(self.directory):
-            for f in filenames:
-                fp = os.path.join(dirpath, f)
-                total_size += os.path.getsize(fp)
-            total_files += len(filenames)
-        self.size = total_size
-        self.files = total_files
+    def update_stats(self):
+        self.files, self.total_size = get_tree_stats(self.directory)
+        pass
 
     def status(self):
+        self.update_stats()
         s = { 'size': self.size,
-              'allowed_size': self.size_allowed,
+              'allowed_size': format_size(self.size_allowed),
               'files': self.files, }
         return s
 
@@ -65,9 +91,10 @@ class Cache:
         pass
 
     def rls(self, pathname, recursive):
-        assert recursive == False, 'Recursive listing not supported'
         print('Cache: rls {}'.format(pathname))
-        self.backend.ls(pathname, recursive)
+        result = self.backend.ls(pathname, recursive)
+        # Update tree
+        # self.update_tree(pathname, recursive, result)
         pass
 
     def fetch(self, pathname, all, recursive):
