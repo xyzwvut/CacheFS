@@ -118,23 +118,21 @@ class Cache:
             path = split_path(result['name'])
             print(path)
 
-            if path[-1] == '.':
-                print('Skipping {}'.format(path[-1]))
-                continue
+            # Why is this not necessary anymore?
+            # if path[-1] == '.':
+            #    continue
 
             if result['type'] == 'file':
                 e = self.root
                 parent = self.root
                 # Last element is the file
-                print('is this the file {}?'.format(path[-1]))
                 for dirname in path[:-1]:
                     e = parent.find(dirname)
                     if e is None:
                         e = Directory(parent, dirname)
                         parent.add_entry(e)
                         parent = e
-                # TODO: Assert walk sucessfull
-                print("Add file to dir '{}'".format(e.pathname()))
+                # TODO: Assert walk successful
                 f = e.find(path[-1])
                 if f is None:
                     # File not known, create
@@ -150,9 +148,9 @@ class Cache:
                         e = Directory(parent, dirname)
                         parent.add_entry(d)
                         parent = d
-                # TODO: Assert walk sucessfull
+                # TODO: Assert walk successful
             else:
-                assert False, 'Unknown type'
+                assert False, 'Unknown ls entry type'
         pass
 
     def lls(self, pathname, recursive):
