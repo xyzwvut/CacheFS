@@ -17,6 +17,7 @@ TODOs:
 - Understand overall hierarchy
 - Go my iTunes files and inspect their atributes
 3. Design
+- Request -> Look in cache -> pass on to backend
 - What happens if backend is disconnected and IO comes in?
 - How does the FUSE interface look?
 - What is the smallest tool that works?
