@@ -4,10 +4,13 @@ A FUSE file system that caches remote files.
 
 Open -> lookup file -> fetch into cache -> local operations
 
-'cfs synch' to push changes to the server
+'cfstool synch' to push changes to the server
 
 Run
 ===
+make run
+
+The fuse driver takes parameters like the mount command.
 python direct.py /Users/sb/cachefs/back/ /Users/sb/cachefs/front/
 
 
