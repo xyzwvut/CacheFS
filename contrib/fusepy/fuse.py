@@ -418,7 +418,7 @@ class FUSE(object):
 
         try:
             return func(*args, **kwargs) or 0
-        except OSError, e:
+        except OSError as e:
             return -(e.errno or EFAULT)
         except:
             print_exc()
@@ -577,7 +577,7 @@ class FUSE(object):
 
     def listxattr(self, path, namebuf, size):
         attrs = self.operations('listxattr', path.decode(self.encoding)) or ''
-        ret = '\x00'.join(attrs).encode(self.encoding) + '\x00'
+        ret = '\x00'.join(attrs).encode(self.encoding) + '\x00'.encode(self.encoding)
 
         retsize = len(ret)
         # allow size queries
@@ -764,7 +764,7 @@ class Operations(object):
 
         if path != '/':
             raise FuseOSError(ENOENT)
-        return dict(st_mode=(S_IFDIR | 0755), st_nlink=2)
+        return dict(st_mode=(stat.S_IFDIR | 0o755), st_nlink=2)
 
     def getxattr(self, path, name, position=0):
         raise FuseOSError(ENOTSUP)
@@ -886,7 +886,7 @@ class LoggingMixIn:
         try:
             ret = getattr(self, op)(path, *args)
             return ret
-        except OSError, e:
+        except OSError as e:
             ret = str(e)
             raise
         finally:
