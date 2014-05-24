@@ -11,7 +11,7 @@ def load_config(config_path):
     update_default_config()
 
     # Required defaults are read first.
-    config.readfp(open('defaults.cfg'))
+    config.readfp(open('server/defaults.cfg'))
 
     config.readfp(config_path)
 
@@ -37,5 +37,5 @@ def update_default_config():
     config.set('back', 'host', 'server-ip')
     config.set('back', 'dir', 'path')
 
-    with open('defaults.cfg', 'w') as configfile:
+    with open('server/defaults.cfg', 'w') as configfile:
         config.write(configfile)
