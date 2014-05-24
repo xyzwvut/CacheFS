@@ -17,6 +17,7 @@ TODOs:
 - Understand overall hierarchy
 - Go my iTunes files and inspect their atributes
 3. Design
+- Add logging (frontend, backend, console}
 - Request -> Look in cache -> pass on to backend
 - What happens if backend is disconnected and IO comes in?
 - How does the FUSE interface look?
@@ -47,7 +48,8 @@ TODOs:
 10. Small files loaded from local to local?
 11. How to sych between remote and local?
 12. Fetched from remote machine
-13. Use cliff for console and argparse integration?
+12. fusepy as a git module?
+14. Use cliff for console and argparse integration?
 
 https://code.google.com/p/pyfilesystem/
 https://github.com/terencehonles/fusepy
