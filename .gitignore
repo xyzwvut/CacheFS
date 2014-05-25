@@ -1,3 +1,4 @@
 *.py[oc]
 *~
 *.swp
+server/server.log
