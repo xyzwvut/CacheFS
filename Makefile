@@ -1,5 +1,5 @@
 
-.PHONY: test tests
+.PHONY: run test tests
 
 run:
 	PYTHONPATH=${PWD} ./server/main.py -c server/my_config.cfg
