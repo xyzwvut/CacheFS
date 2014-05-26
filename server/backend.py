@@ -18,7 +18,7 @@ class ScpBackend:
         pass
 
 
-def parse_ls_line(line):
+def rsync_parse_ls_line(line):
     """ Parse output printet by rsync list directory
         '-rw-r--r--           0 2014/05/10 19:38:43 a'
     """
@@ -49,12 +49,12 @@ def parse_ls_line(line):
         return None
 
 
-def parse_ls_output(out):
+def rsync_parse_ls_output(out):
     """ Parse output producesd by rysnc list-only """
     result = []
     for line in out.decode('utf-8').splitlines():
         # print(line)
-        desc = parse_ls_line(line)
+        desc = rsync_parse_ls_line(line)
         if desc:
             result.append(desc)
     return result
@@ -103,7 +103,7 @@ class RsyncBackend:
 
         out = subprocess.check_output(cmd)
 
-        return parse_ls_output(out)
+        return rsync_parse_ls_output(out)
 
 
 def create(config, local_dir):

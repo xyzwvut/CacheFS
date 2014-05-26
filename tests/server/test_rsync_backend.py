@@ -1,10 +1,10 @@
 import pytest
 
-from server.backend import parse_ls_line
+from server.backend import rsync_parse_ls_line
 
 def test_parse_ls_file():
     line = '-rw-r--r--           0 2014/05/10 19:38:43 a'
-    desc = parse_ls_line(line)
+    desc = rsync_parse_ls_line(line)
 
     assert(desc['type'] == 'file')
     assert(desc['perm_u'] == 'rw-')
@@ -22,7 +22,7 @@ def test_parse_ls_file():
 
 def test_parse_ls_dir():
     line = 'drwxrwsrwx        4096 2014/05/17 18:22:14 dir'
-    desc = parse_ls_line(line)
+    desc = rsync_parse_ls_line(line)
 
     assert(desc['type'] == 'dir')
     assert(desc['perm_u'] == 'rwx')
