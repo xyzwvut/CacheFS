@@ -14,10 +14,16 @@ TODOs:
 - [ok] Rsync list directory
 - [ok] Rsync file size
 - Rsync files permissions
-- Understand overall hierarchy
+- Touch a file (updates atime, mtime)
+- Automate testing
 - Go my iTunes files and inspect their atributes
+- Turn MockCache into a backend
 3. Design
+- Something like with / context manager to claim file open? Decorator?
 - Add logging (frontend, backend, console}
+- When do we need to pin a file into the cache?
+  - As long it is opend?
+  - More?
 - Request -> Look in cache -> pass on to backend
 - What happens if backend is disconnected and IO comes in?
 - How does the FUSE interface look?
