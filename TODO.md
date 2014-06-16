@@ -17,9 +17,11 @@ TODOs:
 - Touch a file (updates atime, mtime)
 - Automate testing
 - Go my iTunes files and inspect their atributes
+  - Special files (symlinks, hardlinks, fifo, sockets)
+    mbp:~/Music$ find . -type l p s:w
 - Turn MockCache into a backend
 3. Design
-- Something like with / context manager to claim file open? Decorator?
+- [ok] Something like with / context manager to claim file open? Decorator?
 - Add logging (frontend, backend, console}
 - When do we need to pin a file into the cache?
   - As long it is opend?
