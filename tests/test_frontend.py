@@ -39,7 +39,10 @@ class Directory:
         return pathname
 
     def remove_file(self, pathname):
-        self.name.remove(pathname)
+        """Remove pathname from directory"""
+        # TODO: Make sure pathname has pefix of directory
+        assert(pathname.startswith(self.directory))
+        self.names.remove(pathname)
 
     def get_subdir(self):
         """Get a sub-directory"""
@@ -56,12 +59,22 @@ class TestFile():
         """Create executable file"""
         pathname = self.directory.get_file()
         open(pathname, 'w').close()
+        assert(os.path.exists(pathname))
 
     def test_create_x_file(self):
         """Create executable file"""
         pathname = self.directory.get_file()
         open(pathname, 'w').close()
-        return pathname
+        assert(os.path.exists(pathname))
+
+    def test_delete_file(self):
+        """Create a file, delete it"""
+        pathname = self.directory.get_file()
+        open(pathname, 'w').close()
+        assert(os.path.exists(pathname))
+        os.remove(pathname)
+        assert(not os.path.exists(pathname))
+        self.directory.remove_file(pathname)
 
     #
     # Add permission
@@ -128,7 +141,7 @@ class TestFile():
     def test_remove_files(self):
         for pathname in self.directory.names:
             os.remove(pathname)
-            assert(not os.exists(pathname))
+            assert(not os.path.exists(pathname))
 
     #
     # Check permissions
