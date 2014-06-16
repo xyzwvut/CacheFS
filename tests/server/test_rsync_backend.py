@@ -2,6 +2,7 @@ import pytest
 
 from server.backend import rsync_parse_ls_line
 
+
 def test_parse_ls_file():
     line = '-rw-r--r--           0 2014/05/10 19:38:43 a'
     desc = rsync_parse_ls_line(line)
@@ -19,6 +20,7 @@ def test_parse_ls_file():
     assert(desc['sec'] == 43)
     assert(desc['name'] == 'a')
     pass
+
 
 def test_parse_ls_dir():
     line = 'drwxrwsrwx        4096 2014/05/17 18:22:14 dir'
@@ -38,6 +40,6 @@ def test_parse_ls_dir():
     assert(desc['name'] == 'dir')
     pass
 
+
 def test_parse_ls_dirs():
     pass
-
