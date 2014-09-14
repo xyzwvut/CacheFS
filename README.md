@@ -4,7 +4,7 @@ A FUSE file system that caches remote files.
 
 Open -> lookup file -> fetch into cache -> local operations
 
-'cfstool synch' to push changes to the server
+'cfstool flush' to push changes to the server
 
 Run
 ===
@@ -14,10 +14,19 @@ The fuse driver takes parameters like the mount command.
 python direct.py /Users/sb/cachefs/back/ /Users/sb/cachefs/front/
 
 
-Run unit tests
-==============
+Run tests
+=========
+All test can be triggered by a make command
+
+make tests (runs all tests)
+make testfileops (runs basic file tests non-fuse directory)
+make testfrontend (tests file tests on the cachefs frontend directory)
+
+TODO: backend (rsync)
+
 make test
 Add -s to disable capturing (print() will be shown)
+
 
 Design
 ======
