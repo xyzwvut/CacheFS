@@ -8,26 +8,27 @@ TODOs:
 - [OK] Write file
 - [OK] Read file
 - [OK] Copy file
-- Cleanup leftover files
-- Integrate server tests
+- [ok] Cleanup leftover files
+- [ok] Integrate server tests
 - [ok] Rsync list file
 - [ok] Rsync list directory
 - [ok] Rsync file size
 - Rsync files permissions
 - Touch a file (updates atime, mtime)
-- Automate testing
-- Go my iTunes files and inspect their atributes
+- [ok] Automate testing
+- [ok] Go through iTunes library and inspect file attributes
   - Special files (symlinks, hardlinks, fifo, sockets)
     mbp:~/Music$ find . -type l p s:w
 - Turn MockCache into a backend
 3. Design
 - [ok] Something like with / context manager to claim file open? Decorator?
-- Add logging (frontend, backend, console}
+- Add logging (frontend, backend, console)
 - When do we need to pin a file into the cache?
   - As long it is opend?
   - More?
 - Request -> Look in cache -> pass on to backend
 - What happens if backend is disconnected and IO comes in?
+  - At the beginning server is always available.
 - How does the FUSE interface look?
 - What is the smallest tool that works?
 - synch to push changes to server
@@ -37,6 +38,7 @@ TODOs:
 4. Prototype
 - Where to put the humanfriendly module?
 - Keep track of current size of the cache
+  - du -h of the cache directory
 - Print size of the cache
 - [ok] How to pass cache, backend around?
 - Local to local backend
